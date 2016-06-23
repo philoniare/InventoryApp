@@ -4,21 +4,26 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.example.philoniare.inventoryapp.model.Product;
 import com.example.philoniare.inventoryapp.model.Supplier;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import butterknife.BindView;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class MainInventory extends AppCompatActivity {
+    public List<Product> productList;
     public Realm realm;
+    @BindView(R.id.product_recycler_view) RecyclerView productRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,7 @@ public class MainInventory extends AppCompatActivity {
         });
 
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(this)
-            .deleteRealmIfMigrationNeeded().build();
+                .deleteRealmIfMigrationNeeded().build();
         Realm.setDefaultConfiguration(realmConfig);
         // Get a Realm instance for this thread
         realm = Realm.getDefaultInstance();
@@ -67,24 +72,24 @@ public class MainInventory extends AppCompatActivity {
         suppliers.add(new Supplier(3, "Asahi Glass Co., Ltd."));
         suppliers.add(new Supplier(4, "AAC Technologies Holdings Inc."));
 
-        ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product("iPhone", 20, 100.50, 1));
-        products.add(new Product("iPad", 30, 300.50, 2));
-        products.add(new Product("Apple Watch", 20, 200.50, 3));
-        products.add(new Product("MacBook", 50, 500.50, 2));
-        products.add(new Product("Mac Pro", 60, 150.50, 1));
-        products.add(new Product("iMac", 70, 160.50, 4));
-        products.add(new Product("Apple TV", 80, 170.50, 1));
-        products.add(new Product("iPod", 90, 250.50, 2));
+        productList = new ArrayList<>();
+        productList.add(new Product("iPhone", 20, 100.50, 1));
+        productList.add(new Product("iPad", 30, 300.50, 2));
+        productList.add(new Product("Apple Watch", 20, 200.50, 3));
+        productList.add(new Product("MacBook", 50, 500.50, 2));
+        productList.add(new Product("Mac Pro", 60, 150.50, 1));
+        productList.add(new Product("iMac", 70, 160.50, 4));
+        productList.add(new Product("Apple TV", 80, 170.50, 1));
+        productList.add(new Product("iPod", 90, 250.50, 2));
 
         // Persist them in Realm
         realm.beginTransaction();
         realm.copyToRealm(suppliers);
-        realm.copyToRealm(products);
+        realm.copyToRealm(productList);
         realm.commitTransaction();
 
-        // Check that data has been persisted
-        final RealmResults<Product> fetchedProducts = realm.where(Product.class).findAll();
-        Log.d("Products", Integer.toString(fetchedProducts.size()));
+        productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ProductAdapter productAdapter = new ProductAdapter(MainInventory.this, productList);
+        productRecyclerView.setAdapter(productAdapter);
     }
 }
