@@ -5,11 +5,20 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import com.example.philoniare.inventoryapp.model.Product;
+import com.example.philoniare.inventoryapp.model.Supplier;
+
+import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 public class MainInventory extends AppCompatActivity {
+    public Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,27 +36,55 @@ public class MainInventory extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_inventory, menu);
-        return true;
-    }
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this)
+            .deleteRealmIfMigrationNeeded().build();
+        Realm.setDefaultConfiguration(realmConfig);
+        // Get a Realm instance for this thread
+        realm = Realm.getDefaultInstance();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        // Create dummy unmanaged objects to seed the app with
+        // if you're interested, suppliers from https://www.apple.com/supplier-responsibility/pdf/Suppliers.pdf
+        // Delete previously saved data
+        final RealmResults<Supplier> storedSuppliers = realm.where(Supplier.class).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                storedSuppliers.deleteAllFromRealm();
+            }
+        });
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        final RealmResults<Product> storedProducts = realm.where(Product.class).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                storedProducts.deleteAllFromRealm();
+            }
+        });
+        ArrayList<Supplier> suppliers = new ArrayList<>();
+        suppliers.add(new Supplier(1, "Alps Electric Co. Ltd."));
+        suppliers.add(new Supplier(2, "Analog Devices Inc."));
+        suppliers.add(new Supplier(3, "Asahi Glass Co., Ltd."));
+        suppliers.add(new Supplier(4, "AAC Technologies Holdings Inc."));
 
-        return super.onOptionsItemSelected(item);
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product("iPhone", 20, 100.50, 1));
+        products.add(new Product("iPad", 30, 300.50, 2));
+        products.add(new Product("Apple Watch", 20, 200.50, 3));
+        products.add(new Product("MacBook", 50, 500.50, 2));
+        products.add(new Product("Mac Pro", 60, 150.50, 1));
+        products.add(new Product("iMac", 70, 160.50, 4));
+        products.add(new Product("Apple TV", 80, 170.50, 1));
+        products.add(new Product("iPod", 90, 250.50, 2));
+
+        // Persist them in Realm
+        realm.beginTransaction();
+        realm.copyToRealm(suppliers);
+        realm.copyToRealm(products);
+        realm.commitTransaction();
+
+        // Check that data has been persisted
+        final RealmResults<Product> fetchedProducts = realm.where(Product.class).findAll();
+        Log.d("Products", Integer.toString(fetchedProducts.size()));
     }
 }
