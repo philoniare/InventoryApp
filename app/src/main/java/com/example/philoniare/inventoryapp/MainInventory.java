@@ -1,8 +1,8 @@
 package com.example.philoniare.inventoryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -29,6 +30,7 @@ public class MainInventory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_inventory);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -36,9 +38,8 @@ public class MainInventory extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Add a Product
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent addProductIntent = new Intent(getApplicationContext(), AddProductActivity.class);
+                startActivity(addProductIntent);
             }
         });
 
@@ -88,8 +89,18 @@ public class MainInventory extends AppCompatActivity {
         realm.copyToRealm(productList);
         realm.commitTransaction();
 
-        productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ProductAdapter productAdapter = new ProductAdapter(MainInventory.this, productList);
+        productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         productRecyclerView.setAdapter(productAdapter);
+        updateProductListFromDB();
+    }
+
+    public void updateProductListFromDB() {
+        productList.clear();
+        RealmResults<Product> storedProducts = realm.where(Product.class).findAll();
+        for(Product storedProduct: storedProducts) {
+            productList.add(storedProduct);
+        }
+        productRecyclerView.getAdapter().notifyDataSetChanged();
     }
 }
