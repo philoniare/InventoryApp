@@ -34,6 +34,7 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:id="@+id/btn_sale"
             android:text="@string/btn_sale"
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"

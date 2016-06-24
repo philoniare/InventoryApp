@@ -4,20 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.philoniare.inventoryapp.model.Product;
 import com.example.philoniare.inventoryapp.model.Supplier;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class AddProductActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.input_product_name) EditText inputProductName;
+    @BindView(R.id.input_product_quantity) EditText inputProductQuantity;
+    @BindView(R.id.input_product_price) EditText inputProductPrice;
     @BindView(R.id.product_suppliers) Spinner supplierSpinner;
     private Realm realm;
     @Override
@@ -43,5 +50,14 @@ public class AddProductActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, supplierList);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         supplierSpinner.setAdapter(spinnerAdapter);
+    }
+
+    @OnClick(R.id.product_add)
+    public void productAdd(View view) {
+        // Validate the data first & display errors
+        String newProductName = inputProductName.getText().toString();
+        int newProductQuantity = Integer.parseInt(inputProductQuantity.getText().toString());
+        Double newProductPrice = Double.parseDouble(inputProductPrice.getText().toString());
+        Product newProduct = new Product();
     }
 }

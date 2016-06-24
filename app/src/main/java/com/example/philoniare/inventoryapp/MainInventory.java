@@ -89,7 +89,21 @@ public class MainInventory extends AppCompatActivity {
         realm.copyToRealm(productList);
         realm.commitTransaction();
 
-        ProductAdapter productAdapter = new ProductAdapter(MainInventory.this, productList);
+        ProductAdapter productAdapter = new ProductAdapter(MainInventory.this, productList,
+                new Utils.BtnClickListener() {
+                    @Override
+                    public void onBtnClick(View view, int position) {
+                        Product product = productList.get(position);
+                        Product storedProduct = realm.where(Product.class)
+                                .equalTo("name", product.getName())
+                                .findFirst();
+                        realm.beginTransaction();
+                        storedProduct.setQuantity(storedProduct.getQuantity() - 1);
+                        realm.commitTransaction();
+
+                        updateProductListFromDB();
+                    }
+                });
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         productRecyclerView.setAdapter(productAdapter);
         updateProductListFromDB();

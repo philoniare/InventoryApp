@@ -1,37 +1,42 @@
 package com.example.philoniare.inventoryapp;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.philoniare.inventoryapp.model.Product;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
 
 public class ProductViewHolder extends RecyclerView.ViewHolder  {
-    private Product mCurrentProduct;
-    private Realm realm;
     @BindView(R.id.product_name) TextView productName;
     @BindView(R.id.product_quantity) TextView productQuantity;
     @BindView(R.id.product_price) TextView productPrice;
     @BindView(R.id.product_image) ImageView productImage;
+    private Utils.BtnClickListener mSaleClickListener;
+    private Utils.BtnClickListener mProductClickListener;
 
-    public ProductViewHolder(View itemView) {
+
+    public ProductViewHolder(View itemView, Utils.BtnClickListener saleListener,
+                             Utils.BtnClickListener productListener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-
+        this.mSaleClickListener = saleListener;
+        this.mProductClickListener = productListener;
     }
 
+    @OnClick(R.id.btn_sale)
+    public void onSaleClick(View view) {
+        if(mSaleClickListener != null) {
+            mSaleClickListener.onBtnClick(view, getAdapterPosition());
+        }
+    }
 
     @OnClick(R.id.product_list_container)
     public void onProductClick(View view) {
-        // OnClick for the list_item
-        Intent detailIntent = new Intent(view.getContext(), ProductDetailActivity.class);
-        view.getContext().startActivity(detailIntent);
+        if(mProductClickListener != null) {
+            mProductClickListener.onBtnClick(view, getAdapterPosition());
+        }
     }
 }
