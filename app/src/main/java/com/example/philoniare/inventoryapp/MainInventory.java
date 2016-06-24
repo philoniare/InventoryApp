@@ -23,7 +23,7 @@ import io.realm.RealmResults;
 
 public class MainInventory extends AppCompatActivity {
     public List<Product> productList;
-    public Realm realm;
+    private Realm realm;
     @BindView(R.id.product_recycler_view) RecyclerView productRecyclerView;
 
     @Override

@@ -17,30 +17,27 @@
         android:layout_height="match_parent">
 
         <TextView
-            tools:text="Product Name"
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <TextView
             android:layout_below="@id/product_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/product_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <TextView
-                tools:text="Product Quantity"
-                android:id="@+id/product_quantity"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+        <TextView
+            android:layout_below="@id/product_quantity"
+            android:id="@+id/product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <TextView
-                tools:text="Product Price"
-                android:id="@+id/product_price"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        <Button
+            android:text="@string/btn_sale"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 </LinearLayout>

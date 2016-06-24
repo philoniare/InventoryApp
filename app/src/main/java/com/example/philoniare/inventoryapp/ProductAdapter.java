@@ -24,7 +24,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list_item, null);
-        ProductViewHolder pvh = new ProductViewHolder(layoutView, mContext);
+        ProductViewHolder pvh = new ProductViewHolder(layoutView);
         return pvh;
     }
 
@@ -38,7 +38,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
                 currentProduct.getQuantity()));
         holder.productPrice.setText(String.format(Locale.ENGLISH,
                 mContext.getString(R.string.product_price_formatter), currentProduct.getPrice()));
-        Picasso.with(mContext).load("http://manvelsoccer.org/wp-content/uploads/2014/02/soccer.jpg").into(holder.productImage);
+        Picasso.with(mContext).load("http://manvelsoccer.org/wp-content/uploads/2014/02/soccer.jpg")
+                .into(holder.productImage);
     }
 
     @Override
