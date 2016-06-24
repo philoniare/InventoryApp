@@ -25,8 +25,13 @@ public class AddProductActivity extends AppCompatActivity {
     @BindView(R.id.input_product_name) EditText inputProductName;
     @BindView(R.id.input_product_quantity) EditText inputProductQuantity;
     @BindView(R.id.input_product_price) EditText inputProductPrice;
+    @BindView(R.id.input_product_image) EditText inputProductImage;
+
     @BindView(R.id.product_suppliers) Spinner supplierSpinner;
     private Realm realm;
+    private String mCurrentPhotoPath;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,11 @@ public class AddProductActivity extends AppCompatActivity {
         String newProductName = inputProductName.getText().toString();
         int newProductQuantity = Integer.parseInt(inputProductQuantity.getText().toString());
         Double newProductPrice = Double.parseDouble(inputProductPrice.getText().toString());
+        String newProductImage = inputProductImage.getText().toString();
         Product newProduct = new Product();
+    }
+
+    private boolean validateNewProduct(String name, int quantity, Double price) {
+        return true;
     }
 }

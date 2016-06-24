@@ -10,6 +10,7 @@
     <string name="email_order_formatter">Please send us more of %s</string>
     <string name="hint_product_name">Enter Product name</string>
     <string name="hint_product_quantity">Enter Product quantity</string>
+    <string name="hint_product_price">Enter Product price</string>
     <string name="btn_sale">Sale</string>
     <string name="modify_quantity_increase">Increase</string>
     <string name="modify_quantity_decrease">Decrease</string>
@@ -17,5 +18,6 @@
     <string name="delete">Delete</string>
     <string name="pick_supplier">Pick a Supplier:</string>
     <string name="delete_dialog_title">Deleting a Product</string>
-
+    <string name="product_add_btn">Add Product</string>
+    <string name="choose_image">Please Enter the Url for the Product Image</string>
 </resources>

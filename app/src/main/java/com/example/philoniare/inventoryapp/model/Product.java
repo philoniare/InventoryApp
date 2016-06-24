@@ -10,6 +10,8 @@ public class Product extends RealmObject {
     private Double price;
     private long supplierId;
 
+    private String imagePath;
+
     public Product() {}
 
     public Product(String name, int quantity, Double price, long supplierId) {
@@ -49,6 +51,14 @@ public class Product extends RealmObject {
 
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override

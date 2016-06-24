@@ -41,13 +41,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         String productName = arguments.getString("productName");
         int productQuantity = arguments.getInt("productQuantity");
         Double productPrice = arguments.getDouble("productPrice");
-
         getSupportActionBar().setTitle(productName);
-        productQuantityTV.setText(String.format(Locale.ENGLISH,
-                getString(R.string.product_quantity_formatter), productQuantity));
+        updateQuantity(productQuantity);
         productPriceTV.setText(String.format(Locale.ENGLISH,
                 getString(R.string.product_price_formatter), productPrice));
 
+        // Get the current product from the DB
         realm = Realm.getDefaultInstance();
         managedCurrentProduct = realm.where(Product.class).equalTo("name", productName)
                 .findFirst();
@@ -55,16 +54,22 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.increase_quantity)
     public void increateQuantity(View view) {
+        int newQuantity = managedCurrentProduct.getQuantity() + 1;
         realm.beginTransaction();
-        managedCurrentProduct.setQuantity(managedCurrentProduct.getQuantity() + 1);
+        managedCurrentProduct.setQuantity(newQuantity);
         realm.commitTransaction();
+        // Apply changes to the UI
+        updateQuantity(newQuantity);
     }
 
     @OnClick(R.id.decrease_quantity)
     public void decreaseQuantity(View view) {
+        int newQuantity = managedCurrentProduct.getQuantity() - 1;
         realm.beginTransaction();
-        managedCurrentProduct.setQuantity(managedCurrentProduct.getQuantity() - 1);
+        managedCurrentProduct.setQuantity(newQuantity);
         realm.commitTransaction();
+        // Apply changes to the UI
+        updateQuantity(newQuantity);
     }
 
     @OnClick(R.id.product_delete)
@@ -101,5 +106,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         if (emailIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(emailIntent);
         }
+    }
+
+    private void updateQuantity(int productQuantity) {
+        productQuantityTV.setText(String.format(Locale.ENGLISH,
+                getString(R.string.product_quantity_formatter), productQuantity));
     }
 }
