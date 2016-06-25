@@ -20,4 +20,10 @@
     <string name="delete_dialog_title">Deleting a Product</string>
     <string name="product_add_btn">Add Product</string>
     <string name="choose_image">Please Enter the Url for the Product Image</string>
+    <string name="err_msg_name_empty">Please enter a product name</string>
+    <string name="err_msg_name_exists">There is already a product with that name</string>
+    <string name="err_msg_quantity">Please enter a valid number</string>
+    <string name="err_msg_price">Please enter a valid price</string>
+    <string name="empty_list_add_product">No product found. Please add a new product</string>
+
 </resources>

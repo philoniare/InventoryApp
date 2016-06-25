@@ -8,6 +8,8 @@
 
     <ImageView
         android:id="@+id/product_image"
+        android:scaleType="centerCrop"
+        android:layout_marginRight="@dimen/product_image_right_margin"
         android:src="@drawable/ic_add_circle_outline_white_48dp"
         android:layout_width="@dimen/product_item_height"
         android:layout_height="@dimen/product_item_height" />

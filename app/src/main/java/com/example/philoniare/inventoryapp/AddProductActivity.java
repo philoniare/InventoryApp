@@ -2,6 +2,7 @@ package com.example.philoniare.inventoryapp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,11 +27,13 @@ public class AddProductActivity extends AppCompatActivity {
     @BindView(R.id.input_product_quantity) EditText inputProductQuantity;
     @BindView(R.id.input_product_price) EditText inputProductPrice;
     @BindView(R.id.input_product_image) EditText inputProductImage;
+    @BindView(R.id.input_layout_product_name) TextInputLayout inputLayoutProductName;
+    @BindView(R.id.input_layout_product_quantity) TextInputLayout inputLayoutProductQuantity;
+    @BindView(R.id.input_layout_product_price) TextInputLayout inputLayoutProductPrice;
 
     @BindView(R.id.product_suppliers) Spinner supplierSpinner;
     private Realm realm;
-    private String mCurrentPhotoPath;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private RealmResults<Supplier> storedSuppliers;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class AddProductActivity extends AppCompatActivity {
         // Get suppliers from DB and populate the spinner
         ArrayList<String> supplierList = new ArrayList<>();
         realm = Realm.getDefaultInstance();
-        RealmResults<Supplier> storedSuppliers = realm.where(Supplier.class).findAll();
+        storedSuppliers = realm.where(Supplier.class).findAll();
         for(Supplier supplier: storedSuppliers) {
             supplierList.add(supplier.getName());
         }
@@ -59,15 +62,63 @@ public class AddProductActivity extends AppCompatActivity {
 
     @OnClick(R.id.product_add)
     public void productAdd(View view) {
+        boolean formValid = true;
         // Validate the data first & display errors
         String newProductName = inputProductName.getText().toString();
-        int newProductQuantity = Integer.parseInt(inputProductQuantity.getText().toString());
-        Double newProductPrice = Double.parseDouble(inputProductPrice.getText().toString());
+        int newProductQuantity = 0;
+        try {
+            newProductQuantity = Integer.parseInt(inputProductQuantity.getText().toString());
+            inputLayoutProductQuantity.setErrorEnabled(false);
+        } catch(NumberFormatException ex) {
+            // Failed to parse quantity
+            inputLayoutProductQuantity.setError(getString(R.string.err_msg_quantity));
+            formValid = false;
+        }
+
+        Double newProductPrice = 0.0;
+        try {
+            newProductPrice = Double.parseDouble(inputProductPrice.getText().toString());
+            inputLayoutProductQuantity.setErrorEnabled(false);
+        } catch(NumberFormatException ex) {
+            inputLayoutProductQuantity.setError(getString(R.string.err_msg_price));
+            formValid = false;
+        }
+
         String newProductImage = inputProductImage.getText().toString();
-        Product newProduct = new Product();
+        if (newProductImage.isEmpty()) {
+            inputLayoutProductName.setError(getString(R.string.err_msg_name_empty));
+            formValid = false;
+        } else {
+            inputLayoutProductQuantity.setErrorEnabled(false);
+        }
+
+        // Check if product with that name exists in the DB
+        Product storedProduct = realm.where(Product.class)
+                .equalTo("name", newProductName).findFirst();
+        if (storedProduct != null) {
+            inputLayoutProductName.setError(getString(R.string.err_msg_name_exists));
+            formValid = false;
+        } else {
+            inputLayoutProductQuantity.setErrorEnabled(false);
+        }
+
+        long supplierId = 0;
+        String selectedSupplierName = supplierSpinner.getSelectedItem().toString();
+        for(Supplier supplier: storedSuppliers) {
+            if(supplier.getName().equals(selectedSupplierName)) {
+                supplierId = supplier.getId();
+                break;
+            }
+        }
+
+        if(formValid) {
+            Product newProduct = new Product(newProductName, newProductQuantity,
+                    newProductPrice, supplierId, inputProductImage.getText().toString());
+            realm.beginTransaction();
+            final Product managedProduct = realm.copyToRealm(newProduct);
+            realm.commitTransaction();
+            finish();
+        }
     }
 
-    private boolean validateNewProduct(String name, int quantity, Double price) {
-        return true;
-    }
 }

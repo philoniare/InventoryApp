@@ -21,6 +21,14 @@ public class Product extends RealmObject {
         this.supplierId = supplierId;
     }
 
+    public Product(String name, int quantity, Double price, long supplierId, String image_url) {
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.supplierId = supplierId;
+        this.imagePath = image_url;
+    }
+
     public String getName() {
         return name;
     }

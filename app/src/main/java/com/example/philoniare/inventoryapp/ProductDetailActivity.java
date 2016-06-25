@@ -65,11 +65,13 @@ public class ProductDetailActivity extends AppCompatActivity {
     @OnClick(R.id.decrease_quantity)
     public void decreaseQuantity(View view) {
         int newQuantity = managedCurrentProduct.getQuantity() - 1;
-        realm.beginTransaction();
-        managedCurrentProduct.setQuantity(newQuantity);
-        realm.commitTransaction();
-        // Apply changes to the UI
-        updateQuantity(newQuantity);
+        if(newQuantity >= 0) {
+            realm.beginTransaction();
+            managedCurrentProduct.setQuantity(newQuantity);
+            realm.commitTransaction();
+            // Apply changes to the UI
+            updateQuantity(newQuantity);
+        }
     }
 
     @OnClick(R.id.product_delete)
@@ -97,15 +99,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.product_order_more)
     public void productOrderMore(View view) {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-        emailIntent.setData(Uri.parse("mailto:")); // only email apps should handle this
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[0]);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT,
-                String.format(Locale.ENGLISH, getString(R.string.email_order_formatter),
-                        managedCurrentProduct.getName()));
-        if (emailIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(emailIntent);
-        }
+        String url = "tel:3334444";
+        Intent phoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
+        startActivity(phoneIntent);
     }
 
     private void updateQuantity(int productQuantity) {

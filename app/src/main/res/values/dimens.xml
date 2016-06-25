@@ -6,5 +6,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="product_item_height">100dp</dimen>
     <dimen name="input_padding_bottom">15dp</dimen>
+    <dimen name="product_image_right_margin">15dp</dimen>
 
 </resources>

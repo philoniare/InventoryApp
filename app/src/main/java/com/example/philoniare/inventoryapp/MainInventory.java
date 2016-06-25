@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.philoniare.inventoryapp.model.Product;
 import com.example.philoniare.inventoryapp.model.Supplier;
@@ -25,6 +26,8 @@ public class MainInventory extends AppCompatActivity {
     public List<Product> productList;
     private Realm realm;
     @BindView(R.id.product_recycler_view) RecyclerView productRecyclerView;
+    @BindView(R.id.product_empty_view) TextView productEmptyView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,19 @@ public class MainInventory extends AppCompatActivity {
         for(Product storedProduct: storedProducts) {
             productList.add(storedProduct);
         }
+        if(productList.isEmpty()) {
+            productRecyclerView.setVisibility(View.GONE);
+            productEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            productRecyclerView.setVisibility(View.VISIBLE);
+            productEmptyView.setVisibility(View.GONE);
+        }
         productRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateProductListFromDB();
     }
 }
