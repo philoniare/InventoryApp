@@ -1,5 +1,6 @@
 package com.example.philoniare.inventoryapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +23,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private TextView productPriceTV;
     private Realm realm;
     private Product managedCurrentProduct;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        context = this;
 
         // Get passed bundle data
         Bundle arguments = getIntent().getExtras();
@@ -90,7 +93,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Ask for confirmation first
-                new AlertDialog.Builder(getApplicationContext())
+                new AlertDialog.Builder(context)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle(getString(R.string.delete_dialog_title))
                         .setMessage(String.format(Locale.ENGLISH, getString(R.string.delete_product_formatter),
