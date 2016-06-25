@@ -22,7 +22,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-public class MainInventory extends AppCompatActivity {
+public class MainInventoryActivity extends AppCompatActivity {
     public List<Product> productList;
     private Realm realm;
     @BindView(R.id.product_recycler_view) RecyclerView productRecyclerView;
@@ -97,7 +97,7 @@ public class MainInventory extends AppCompatActivity {
         realm.copyToRealm(productList);
         realm.commitTransaction();
 
-        ProductAdapter productAdapter = new ProductAdapter(MainInventory.this, productList,
+        ProductAdapter productAdapter = new ProductAdapter(MainInventoryActivity.this, productList,
                 new Utils.BtnClickListener() {
                     @Override
                     public void onBtnClick(View view, int position) {

@@ -2,15 +2,20 @@ package com.example.philoniare.inventoryapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.philoniare.inventoryapp.model.Product;
-import com.squareup.picasso.Picasso;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,16 +60,42 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
                 currentProduct.getQuantity()));
         holder.productPrice.setText(String.format(Locale.ENGLISH,
                 mContext.getString(R.string.product_price_formatter), currentProduct.getPrice()));
+        // Load image from internet
         String imageUrl = currentProduct.getImagePath();
         if(imageUrl == null || imageUrl.equals("")) {
             // Placeholder image for product without image
             imageUrl = "http://www.lavacable.com/assets/images/Products/placeholder_product.jpg";
         }
-        Picasso.with(mContext).load(imageUrl).into(holder.productImage);
+        new DownloadImageTask(holder.productImage).execute(imageUrl);
     }
 
     @Override
     public int getItemCount() {
         return this.mProductList.size();
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

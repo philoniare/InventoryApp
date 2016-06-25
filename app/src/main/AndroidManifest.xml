@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainInventory"
+            android:name=".MainInventoryActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,13 +21,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:parentActivityName=".MainInventory"
+            android:parentActivityName=".MainInventoryActivity"
             android:name=".ProductDetailActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:parentActivityName=".MainInventory"
+            android:parentActivityName=".MainInventoryActivity"
             android:name=".AddProductActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
