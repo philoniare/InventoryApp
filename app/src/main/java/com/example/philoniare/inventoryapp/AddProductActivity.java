@@ -78,28 +78,24 @@ public class AddProductActivity extends AppCompatActivity {
         Double newProductPrice = 0.0;
         try {
             newProductPrice = Double.parseDouble(inputProductPrice.getText().toString());
-            inputLayoutProductQuantity.setErrorEnabled(false);
+            inputLayoutProductPrice.setErrorEnabled(false);
         } catch(NumberFormatException ex) {
-            inputLayoutProductQuantity.setError(getString(R.string.err_msg_price));
+            inputLayoutProductPrice.setError(getString(R.string.err_msg_price));
             formValid = false;
         }
 
         String newProductImage = inputProductImage.getText().toString();
-        if (newProductImage.isEmpty()) {
-            inputLayoutProductName.setError(getString(R.string.err_msg_name_empty));
-            formValid = false;
-        } else {
-            inputLayoutProductQuantity.setErrorEnabled(false);
-        }
-
         // Check if product with that name exists in the DB
         Product storedProduct = realm.where(Product.class)
                 .equalTo("name", newProductName).findFirst();
-        if (storedProduct != null) {
+        if (newProductName.equals("")) {
+            inputLayoutProductName.setError(getString(R.string.err_msg_name_empty));
+            formValid = false;
+        } else if(storedProduct != null) {
             inputLayoutProductName.setError(getString(R.string.err_msg_name_exists));
             formValid = false;
         } else {
-            inputLayoutProductQuantity.setErrorEnabled(false);
+            inputLayoutProductName.setErrorEnabled(false);
         }
 
         long supplierId = 0;

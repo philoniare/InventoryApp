@@ -77,11 +77,16 @@ public class MainInventory extends AppCompatActivity {
         suppliers.add(new Supplier(4, "AAC Technologies Holdings Inc."));
 
         productList = new ArrayList<>();
-        productList.add(new Product("iPhone", 20, 100.50, 1));
-        productList.add(new Product("iPad", 30, 300.50, 2));
-        productList.add(new Product("Apple Watch", 20, 200.50, 3));
-        productList.add(new Product("MacBook", 50, 500.50, 2));
-        productList.add(new Product("Mac Pro", 60, 150.50, 1));
+        productList.add(new Product("iPhone", 20, 100.50, 1,
+                "http://store.storeimages.cdn-apple.com/4973/as-images.apple.com/is/image/AppleInc/aos/published/images/i/ph/iphone6/plus/iphone6-plus-box-silver-2014_GEO_US?wid=478&hei=595&fmt=jpeg&qlt=95&op_sharpen=0&resMode=bicub&op_usm=0.5,0.5,0,0&iccEmbed=0&layer=comp&.v=IqGln0"));
+        productList.add(new Product("iPad", 30, 300.50, 2,
+                "http://store.storeimages.cdn-apple.com/4973/as-images.apple.com/is/image/AppleInc/aos/published/images/i/pa/ipad/air/ipad-air-witb-gray-cel-201410_GEO_US?wid=366&hei=519&fmt=jpeg&qlt=95&op_sharpen=0&resMode=bicub&op_usm=0.5,0.5,0,0&iccEmbed=0&layer=comp&.v=Fzsl_0"));
+        productList.add(new Product("Apple Watch", 20, 200.50, 3,
+                "http://www.imore.com/sites/imore.com/files/styles/large/public/topic_images/2015/topic-apple-watch-all.png?itok=OUtlCphV"));
+        productList.add(new Product("MacBook", 50, 500.50, 2,
+                "http://zapp4.staticworld.net/reviews/graphics/products/uploaded/117913_g7.jpg"));
+        productList.add(new Product("Mac Pro", 60, 150.50, 1,
+                "http://store.storeimages.cdn-apple.com/4973/as-images.apple.com/is/image/AppleInc/aos/published/images/M/F8/MF858/MF858?wid=572&hei=572&fmt=jpeg&qlt=95&op_sharpen=0&resMode=bicub&op_usm=0.5,0.5,0,0&iccEmbed=0&layer=comp&.v=ronlz2"));
         productList.add(new Product("iMac", 70, 160.50, 4));
         productList.add(new Product("Apple TV", 80, 170.50, 1));
         productList.add(new Product("iPod", 90, 250.50, 2));

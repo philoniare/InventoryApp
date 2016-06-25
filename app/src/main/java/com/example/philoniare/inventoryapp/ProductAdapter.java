@@ -55,8 +55,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
                 currentProduct.getQuantity()));
         holder.productPrice.setText(String.format(Locale.ENGLISH,
                 mContext.getString(R.string.product_price_formatter), currentProduct.getPrice()));
-        Picasso.with(mContext).load("http://manvelsoccer.org/wp-content/uploads/2014/02/soccer.jpg")
-                .into(holder.productImage);
+        String imageUrl = currentProduct.getImagePath();
+        if(imageUrl == null || imageUrl.equals("")) {
+            // Placeholder image for product without image
+            imageUrl = "http://www.lavacable.com/assets/images/Products/placeholder_product.jpg";
+        }
+        Picasso.with(mContext).load(imageUrl).into(holder.productImage);
     }
 
     @Override
