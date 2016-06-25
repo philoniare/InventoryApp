@@ -16,8 +16,6 @@ import com.example.philoniare.inventoryapp.model.Supplier;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -25,17 +23,21 @@ import io.realm.RealmResults;
 public class MainInventoryActivity extends AppCompatActivity {
     public List<Product> productList;
     private Realm realm;
-    @BindView(R.id.product_recycler_view) RecyclerView productRecyclerView;
-    @BindView(R.id.product_empty_view) TextView productEmptyView;
+    private RecyclerView productRecyclerView;
+    private TextView productEmptyView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_inventory);
-        ButterKnife.bind(this);
+
+        // Bind views
+        productRecyclerView = (RecyclerView) findViewById(R.id.product_recycler_view);
+        productEmptyView = (TextView) findViewById(R.id.product_empty_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
